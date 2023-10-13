@@ -17,7 +17,6 @@ HISTORICAL_COLUMNS = {"date": "datetime64[ns]",
                       "close": "float",
                       "volume": "int"}
 
-
 class DbReader(Db):
 
     def __init__(self, path: str):

@@ -1,8 +1,7 @@
-import enum
+from enum import Enum
 
-class TradeType(enum):
+class TradeType(Enum):
     Buy = "Buy"
     Sell = "Sell"
-    SellShort = "SellShort"
 
 
