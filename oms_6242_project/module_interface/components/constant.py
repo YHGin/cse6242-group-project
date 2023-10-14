@@ -36,12 +36,14 @@ INPUT_TEXT_STYLE = {
 
 TABLE_STYLE = {'overflowX': 'auto',
                'width': '90%',
+               'font-size': '50px',
                'margin': '10px',
                'height': '30%'}
 
 CELL_STYLE = {
-    'width': '30%',
+    'width': '40%',
     'textOverflow': 'ellipsis',
     'overflow': 'hidden',
+    'font-size': '20px',
     'textAlign': 'left',
 }

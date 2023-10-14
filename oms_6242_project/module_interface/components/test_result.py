@@ -38,6 +38,7 @@ def get_performance_test_result(df: pd.DataFrame):
                 'width': '40%',
                 'textOverflow': 'ellipsis',
                 'overflow': 'hidden',
+                'font-size': '20px',
                 'textAlign': 'left',
             },
             style_data={
@@ -50,11 +51,19 @@ def get_performance_test_result(df: pd.DataFrame):
                     'backgroundColor': 'rgb(220, 220, 220)',
                 }
             ],
+
             style_header={
                 'backgroundColor': 'rgb(210, 210, 210)',
                 'color': 'black',
                 'fontWeight': 'bold'
-            }
+            },
+            style_cell_conditional=[
+                {
+                    'if': {'column_id': 'param'},
+                    'textAlign': 'left',
+                    'fontWeight': 'bold',
+                    'font-size': '25px',
+                }]
         )
     ])
     return test_result
