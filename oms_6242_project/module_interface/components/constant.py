@@ -1,5 +1,8 @@
 """
-This is predefined style for table size, buttom size etc
+This is predefined style for component size
+1. Table size
+2. Figure size
+3. Buttom size
 """
 UPLOAD_FILE_STYLE = {
     'width': '90%',
@@ -12,7 +15,7 @@ UPLOAD_FILE_STYLE = {
     'margin': '10px',
 }
 
-BUTTOM_STYLE = {
+CLICK_BUTTOM_STYLE = {
     'width': '90%',
     'height': '60px',
     'lineHeight': '60px',
@@ -21,6 +24,8 @@ BUTTOM_STYLE = {
     'textAlign': 'center',
     'margin': '10px'
 }
+DATE_BUTTOM_SYTLE = {'margin': '10px', 'width': '240px'}
+STRATEGY_BUTTOM_SYTLE = {'margin': '5px', 'width': '250px', 'height': '60px', 'textAlign': 'left'}
 
 INPUT_TEXT_STYLE = {
     'width': '50%',
@@ -28,12 +33,6 @@ INPUT_TEXT_STYLE = {
     'textAlign': 'left',
     'margin': '10px'
 }
-
-
-STRATEGY_BUTTOM_SYTLE = style={'margin': '10px', 'width': '60%'}
-
-
-DATE_BUTTOM_SYTLE = style={'margin': '10px', 'width': '50%'}
 
 TABLE_STYLE = {'overflowX': 'auto',
                'width': '90%',
