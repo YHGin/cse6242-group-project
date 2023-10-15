@@ -12,3 +12,6 @@ This is the team project for cse6242
 ### my project proposal 
 reference site: https://algotrading101.com/learn/backtesting-py-guide/
 
+### python env control
+Would recommand to create a new python venv to avoid package conflict
+1. pip install requirment.txt
