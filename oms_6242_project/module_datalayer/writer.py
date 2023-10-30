@@ -25,7 +25,7 @@ class DbWriter(Db):
         connection = self._connection
         connection.text_factory = str
         cursor = connection.cursor()
-        for index, (date, high, low, close, volume) in df.iterrows():
+        for index, (date, open, high, low, close, volume) in df.iterrows():
             try:
                 sql_content = (date, ric, high, low, close, volume)
                 sql_insert_row = f"INSERT INTO {table_name} VALUES (?,?,?,?,?,?)"
