@@ -7,6 +7,8 @@ from module_interface.components.side_bar import DATE_PICKER_START, DATE_PICKER_
 from module_interface.components.test_result import get_performance_test_result, get_single_stock_pnl_result, \
     get_portfolio_pnl_result
 
+from module_datalayer.writer import DbWriter
+
 from dash import html, dcc, callback
 import pandas as pd
 from dash.exceptions import PreventUpdate
@@ -45,8 +47,10 @@ def update_output(contents, list_of_names, list_of_dates):
     content_type, content_string = contents.split(',')
     decoded = base64.b64decode(content_string)
     df = pd.read_csv(io.StringIO(decoded.decode('utf-8')))
+    db_writer = DbWriter(path="./module_datalayer/resource/db/backtest_db")
+    db_writer.write_csv_data(table_name="stock_price", df=df, ric="00001.HK")
+    db_writer.write_csv_data(table_name="stock_price", df=df, ric="00002.HK")
     return df.to_json(date_format='iso', orient='split')
-
 
 @callback(
     Output('container-button-basic', 'children'),

@@ -2,13 +2,19 @@
 for this front end interface, please vist https://dash.plotly.com/ to add componenets
 The goal is to replicate line chart like /module_interface/resource/backtest_sample.html along with a performance table
 """
+import sys
+import os
+
+# Add the parent directory to the Python path
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+sys.path.append(parent_dir)
+
 from module_interface.components.content import CONTENT
 from module_interface.components.side_bar import SIDE_BAR
 from module_interface.components.portfolio_uploader import generate_upload_csv_table, generate_consituent_weight, \
     output_from_store, display_graph
 
 from dash import Dash, html, dcc
-
 
 def app_run():
     external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
