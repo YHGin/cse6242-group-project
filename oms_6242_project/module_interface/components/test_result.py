@@ -1,22 +1,25 @@
 """
 This script produce test result context
 """
+from module_core.container.BackTestInfo import NotionalInfo, PerformanceInfo
+from module_utility.sample.mock import MOCK_PERFORMANCE_STATUS
 
-from module_utility.sample.mock import MOCK_PERFORMANCE_STATUS, MOCK_PNL_RESULT
-
+from module_core.core import BTCore
 from dash import html, dcc, dash_table
 import pandas as pd
 import plotly.express as px
 
 DF_PERFORMANCE = MOCK_PERFORMANCE_STATUS()
-DF_STOCK, DF_BENCHMARK = MOCK_PNL_RESULT()
 
 
 def get_performance_test_result(df: pd.DataFrame):
+
+    rics = df.ric.unique()
+    first_ric = rics[0]
     test_result = html.Div([
         html.H2(children='BackTest Result',
                 style={'textAlign': 'left', 'width': '90%', 'height': '30%', 'margin': '10px'}),
-        dcc.Dropdown(DF_STOCK.ric.unique(), '00001.HK', id='dropdown-selection',
+        dcc.Dropdown(rics, first_ric, id='dropdown-selection',
                      style={'margin': '10px', 'width': '45%'}),
         html.H3(children='Performance PNL Percentage',
                 style={'textAlign': 'left', 'width': '90%', 'height': '30%', 'margin': '10px'}),
@@ -69,13 +72,16 @@ def get_performance_test_result(df: pd.DataFrame):
     return test_result
 
 
-def get_single_stock_pnl_result(ric: str):
-    df_stock = DF_STOCK[DF_STOCK.ric == ric]
-    df_plot = pd.concat([df_stock, DF_BENCHMARK], axis=0)
+def get_single_stock_pnl_result(ric: str, df_portfolio:pd.DataFrame):
+    df_stock = df_portfolio[ric].to_frame()
+    df_stock = df_stock.rename(columns={ric:"pnl_pct"})
+    df_stock["ric"] = ric
+    df_plot = pd.concat([df_stock], axis=0)
     fig = px.line(df_plot, x=df_plot.index, y='pnl_pct', color="ric", title="Underlying performance")
     return fig
 
 
-def get_portfolio_pnl_result(df: pd.DataFrame):
-    fig = px.line(DF_BENCHMARK, x=DF_BENCHMARK.index, y='pnl_pct', color="ric", title="Portfolio performance")
+def get_portfolio_pnl_result(df_benchmark:pd.DataFrame):
+    # TODO too late on Thursday night, actually it already Friday.. I yiwei will add real function here, or anyone want to help here?
+    fig = px.line(df_benchmark, x=df_benchmark.index, y='pnl_pct', color="ric", title="Portfolio performance")
     return fig

@@ -26,11 +26,11 @@ DATE_PICKER_END = 'my-date-picker-single-end'
 DATE_CONTAINER_PICKER_END = "output-container-date-picker-single-end"
 PORTFOLIO_NOTIONAL_INPUT = "portfolio-notional-input"
 PORTFOLIO_NOTIONAL_OUTPUT = "portfolio-notional-output"
-
+BACKTEST_RESULT = "backtest-result"
 RUN_BACK_TEST = "run-back-test"
 STORED_PORTFOLIO = "stored-portfolio"
 STRATEGY_DROPDOWN = 'strategy-dropdown-selection'
-
+CONTAINER_BUTTOM_BASIC = "container-button-basic"
 
 SIDE_BAR = html.Div(
     [
@@ -62,9 +62,9 @@ SIDE_BAR = html.Div(
         dcc.DatePickerSingle(
             id=DATE_PICKER_START,
             min_date_allowed=date(1995, 8, 5),
-            max_date_allowed=date(2017, 9, 19),
-            initial_visible_month=date(2017, 8, 5),
-            date=date(2017, 8, 25),
+            max_date_allowed=date(2023, 9, 19),
+            initial_visible_month=date(2023, 6, 1),
+            date=date(2023, 6, 1),
             style=DATE_BUTTOM_SYTLE,
             placeholder="Start Test Day"
         ),
@@ -73,13 +73,13 @@ SIDE_BAR = html.Div(
         dcc.DatePickerSingle(
             id=DATE_PICKER_END,
             min_date_allowed=date(1995, 8, 5),
-            max_date_allowed=date(2017, 9, 19),
+            max_date_allowed=date(2023, 9, 19),
             initial_visible_month=date(2017, 8, 5),
-            date=date(2017, 8, 25),
+            date=date(2023, 6, 30),
             style=DATE_BUTTOM_SYTLE,
             placeholder="End Test Day"
-        )
-
+        ),
+        dcc.Store(id=BACKTEST_RESULT)
     ],
     style=SIDEBAR_STYLE
 )

@@ -1,7 +1,6 @@
 """
 This is Mock Data
 """
-from module_core.container.stock import run_stock_test
 import pandas as pd
 from typing import Union
 
@@ -95,14 +94,6 @@ def MOCK_PERFORMANCE_STATUS():
     df = df.rename(columns={"index": "param", 0: ""})
     df.round({'SQN': 1, 'Avg. Trade [%]': 0})
     return df
-
-def MOCK_PNL_RESULT() -> Union[pd.DataFrame, pd.DataFrame]:
-    df_stock_0 = run_stock_test('00001.HK')
-    df_stock_1 = run_stock_test('00002.HK')
-    df_bechmark = run_stock_test('.HSI')
-    df = pd.concat([df_stock_0, df_stock_1], axis=0)
-    return df, df_bechmark
-
 
 if __name__ == '__main__':
     MOCK_PERFORMANCE_STATUS()
