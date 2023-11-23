@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from abc import ABC
 from typing import List
-from container.portfolio import Portfolio
+from module_core.container.portfolio import Portfolio
 from module_core.container.BackTestInfo import NotionalInfo, PerformanceInfo
 
 
@@ -52,4 +52,7 @@ class BTCore(ABC):
         return pd_output
 
     def get_benchmark_pnl(self) -> pd.Series:
+        raise NotImplemented
+
+    def get_vol_status(self) -> pd.Series:
         raise NotImplemented

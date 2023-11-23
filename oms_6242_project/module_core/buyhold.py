@@ -1,10 +1,11 @@
 import pandas as pd
-from core import BTCore
-from container.portfolio import Portfolio
-from container.stock import Stock
+from module_core.core import BTCore
+from module_core.container.portfolio import Portfolio
+from module_core.container.stock import Stock
 from module_datalayer.reader import get_dbreader, DbReader
 from module_core.container.BackTestInfo import NotionalInfo, PerformanceInfo
 
+DB_PATH = "../module_datalayer/resource/db/backtest_db"
 
 class BuyHoldBT(BTCore):
 
@@ -81,9 +82,9 @@ def mock_portfolio() -> pd.DataFrame:
 
 
 def run():
-    start_date = "2023-06-01"
+    start_date = "2023-06-01" 
     end_date = "2023-06-30"
-    path = "../module_datalayer/resource/db/backtest_db"
+    path = DB_PATH
     df_portfolio = mock_portfolio()
     buyhold_test = BuyHoldBT(start_date=start_date, end_date=end_date, path=path, df_portfolio=df_portfolio)
     buyhold_test.run()
