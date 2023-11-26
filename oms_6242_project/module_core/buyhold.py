@@ -1,20 +1,15 @@
 import pandas as pd
-from module_core.core import BTCore
+from module_core.core import BTCore, DB_PATH
 from module_core.container.portfolio import Portfolio
 from module_core.container.stock import Stock
 from module_datalayer.reader import get_dbreader, DbReader
-from module_core.container.BackTestInfo import NotionalInfo, PerformanceInfo
 
-DB_PATH = "../module_datalayer/resource/db/backtest_db"
 
 class BuyHoldBT(BTCore):
 
-    def __init__(self, start_date: str, end_date: str, path: str, df_portfolio: pd.DataFrame):
-        self.start_date = start_date
-        self.end_date = end_date
-        self.__path = path
+    def __init__(self, start_date: str, end_date: str, path: str, df_portfolio: pd.DataFrame, benchmark_ric: str):
         self.__df_portfolio = df_portfolio
-        super(BuyHoldBT, self).__init__(start_date)
+        super(BuyHoldBT, self).__init__(start_date, end_date, benchmark_ric, path)
 
     def run(self):
         """
@@ -22,17 +17,16 @@ class BuyHoldBT(BTCore):
         :return:
         """
         df_portfolio = self.__df_portfolio
-        path = self.__path
-        db_reader = get_dbreader(path)
         start_date = self.start_date
         end_date = self.end_date
-        portfolio = self.build(df_portfolio=df_portfolio, start_date=start_date, db_reader=db_reader)
+        db_reader = self._db_reader
+        portfolio = self.build(df_portfolio=df_portfolio, db_reader=db_reader)
         dates = pd.bdate_range(start=start_date, end=end_date)
         for date in dates:
             trade_date = str(date.date())
             portfolio = self.update(portfolio=portfolio, date=trade_date, db_reader=db_reader)
 
-    def build(self, df_portfolio: pd.DataFrame, start_date: str, db_reader: DbReader) -> Portfolio:
+    def build(self, df_portfolio: pd.DataFrame, db_reader: DbReader) -> Portfolio:
         """
 
         :param df_portfolio:
@@ -40,10 +34,14 @@ class BuyHoldBT(BTCore):
         :param db_reader:
         :return:
         """
+        start_date = self.start_date
         date = pd.Timestamp(start_date)
         portfolio = self.portfolio
         rics = df_portfolio["ric"].drop_duplicates().to_list()
         stock_price = db_reader.get_stock_price(rics=rics, start_date=start_date, end_date=start_date)
+        sod_price = (stock_price[stock] for stock in stock_price)
+        df_sod_price = pd.concat(sod_price)
+        self.initial_portfolio = self.get_t0_port_notional(df_portfolio=df_portfolio, df_sod_price=df_sod_price)
         for index, (ric, side, qty) in df_portfolio.iterrows():
             df_price = stock_price.get(ric)
             price = df_price["close"].iloc[0]
@@ -82,16 +80,17 @@ def mock_portfolio() -> pd.DataFrame:
 
 
 def run():
-    start_date = "2023-06-01" 
+    start_date = "2023-06-01"
     end_date = "2023-06-30"
-    path = DB_PATH
     df_portfolio = mock_portfolio()
-    buyhold_test = BuyHoldBT(start_date=start_date, end_date=end_date, path=path, df_portfolio=df_portfolio)
+    buyhold_test = BuyHoldBT(start_date=start_date, end_date=end_date, df_portfolio=df_portfolio, path=DB_PATH,
+                             benchmark_ric=".HSI")
     buyhold_test.run()
     portfolio = buyhold_test.portfolio
-    df_stock_metric = buyhold_test.get_stock_metric(ric="00001.HK", field=PerformanceInfo.PriceChange.value)
-    stocks_price_change_metric = buyhold_test.get_portfolio_metric(field=PerformanceInfo.PriceChange.value)
-    notional_metric = buyhold_test.get_portfolio_metric(field=NotionalInfo.Notional.value)
+    # df_stock_metric = buyhold_test.get_stock_metric(ric="00001.HK", field=PerformanceInfo.PriceChange.value)
+    portfolio_pnl = buyhold_test.get_portfolio_pnl()
+    stock_pnl = buyhold_test.get_stock_pnl()
+    benchmark_pnl = buyhold_test.get_benchmark_pnl()
     debug_point = 3
 
 

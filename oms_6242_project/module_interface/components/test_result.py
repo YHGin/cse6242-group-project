@@ -13,7 +13,6 @@ DF_PERFORMANCE = MOCK_PERFORMANCE_STATUS()
 
 
 def get_performance_test_result(df: pd.DataFrame):
-
     rics = df.ric.unique()
     first_ric = rics[0]
     test_result = html.Div([
@@ -72,16 +71,15 @@ def get_performance_test_result(df: pd.DataFrame):
     return test_result
 
 
-def get_single_stock_pnl_result(ric: str, df_portfolio:pd.DataFrame):
-    df_stock = df_portfolio[ric].to_frame()
-    df_stock = df_stock.rename(columns={ric:"pnl_pct"})
+def get_single_stock_pnl_result(ric: str, df_stocks: pd.DataFrame):
+    df_stock = df_stocks[ric].to_frame()
+    df_stock = df_stock.rename(columns={ric: "pnl_pct"})
     df_stock["ric"] = ric
     df_plot = pd.concat([df_stock], axis=0)
     fig = px.line(df_plot, x=df_plot.index, y='pnl_pct', color="ric", title="Underlying performance")
     return fig
 
 
-def get_portfolio_pnl_result(df_benchmark:pd.DataFrame):
-    # TODO too late on Thursday night, actually it already Friday.. I yiwei will add real function here, or anyone want to help here?
-    fig = px.line(df_benchmark, x=df_benchmark.index, y='pnl_pct', color="ric", title="Portfolio performance")
+def get_portfolio_pnl_result(df_plot: pd.DataFrame):
+    fig = px.line(df_plot, x=df_plot.index, y='total_return', color="ric", title="Portfolio performance")
     return fig

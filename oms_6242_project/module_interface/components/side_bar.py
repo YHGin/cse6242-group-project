@@ -26,7 +26,9 @@ DATE_PICKER_END = 'my-date-picker-single-end'
 DATE_CONTAINER_PICKER_END = "output-container-date-picker-single-end"
 PORTFOLIO_NOTIONAL_INPUT = "portfolio-notional-input"
 PORTFOLIO_NOTIONAL_OUTPUT = "portfolio-notional-output"
-BACKTEST_RESULT = "backtest-result"
+BACKTEST_PORTFOLIO_RESULT = "backtest-portfolio-result"
+BACKTEST_STOCK_RESULT = "backtest-stock-result"
+BACKTEST_BENCHMARK_RESULT = "backtest-benmark-result"
 RUN_BACK_TEST = "run-back-test"
 STORED_PORTFOLIO = "stored-portfolio"
 STRATEGY_DROPDOWN = 'strategy-dropdown-selection'
@@ -79,7 +81,9 @@ SIDE_BAR = html.Div(
             style=DATE_BUTTOM_SYTLE,
             placeholder="End Test Day"
         ),
-        dcc.Store(id=BACKTEST_RESULT)
+        dcc.Store(id=BACKTEST_PORTFOLIO_RESULT),
+        dcc.Store(id=BACKTEST_STOCK_RESULT),
+        dcc.Store(id=BACKTEST_BENCHMARK_RESULT)
     ],
     style=SIDEBAR_STYLE
 )

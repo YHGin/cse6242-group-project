@@ -16,7 +16,7 @@ HISTORICAL_COLUMNS = {"date": "datetime64[ns]",
                       "high": "float",
                       "low": "float",
                       "close": "float",
-                      "volume": "int"}
+                      "volume": "float"}
 
 
 class DbReader(Db):
@@ -29,12 +29,23 @@ class DbReader(Db):
                         start_date: str,
                         end_date: str) -> Dict[
         str, pd.DataFrame]:
-        df_raw = self.fetch_sql(rics, start_date, end_date)
+        df_raw = self.fetch_sql(rics, start_date, end_date,table_name="stock_price")
         df_result = self._preprocess(df=df_raw)
         result = self._postprocess(df_result)
         return result
 
-    def fetch_sql(self, rics: List[str], start_date: str, end_date: str) -> pd.DataFrame:
+    def get_index_price(self,
+                        rics: List[str],
+                        start_date: str,
+                        end_date: str) -> Dict[
+        str, pd.DataFrame]:
+        df_raw = self.fetch_sql(rics, start_date, end_date,table_name="index_price")
+        df_raw["volume"] = [i.replace("B","") for i in df_raw["volume"]]
+        df_result = self._preprocess(df=df_raw)
+        result = self._postprocess(df_result)
+        return result
+
+    def fetch_sql(self, rics: List[str], start_date: str, end_date: str,table_name:str) -> pd.DataFrame:
         """
 
         :param rics:
@@ -48,7 +59,7 @@ class DbReader(Db):
         ris_query = f"({ris_query})"
         start_date_query = f"date('{start_date}')"
         end_date_query = f"date('{end_date}')"
-        sql = f"SELECT * FROM stock_price where ric in {ris_query} and date >= {start_date_query} and date <= {end_date_query}"
+        sql = f"SELECT * FROM {table_name} where ric in {ris_query} and date >= {start_date_query} and date <= {end_date_query}"
         cursor = connection.execute(sql)
         cols = list(map(lambda x: x[0], cursor.description))
         data = cursor.fetchall()
