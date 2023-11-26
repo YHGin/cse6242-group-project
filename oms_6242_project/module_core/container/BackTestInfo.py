@@ -9,3 +9,8 @@ class NotionalInfo(Enum):
 
 class PerformanceInfo(Enum):
     PriceChange = "price_change"
+
+
+class SqlTable(Enum):
+    stock_price = "stock_price"
+    index_price = "index_price"
