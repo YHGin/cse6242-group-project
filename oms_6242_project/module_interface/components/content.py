@@ -69,6 +69,7 @@ def update_output(contents, list_of_names, list_of_dates):
 def update_output(n_clicks, data, start_date, end_date, portfolio_notional):
     df = pd.read_json(data, orient='split')
     df = df[["ric", "side", "qty"]]
+    rics = df["ric"].unique()
     print("doing test")
     buyhold_test = BuyHoldBT(start_date=start_date, end_date=end_date, path=DB_PATH, df_portfolio=df,
                              benchmark_ric=".HSI")
@@ -79,7 +80,8 @@ def update_output(n_clicks, data, start_date, end_date, portfolio_notional):
     stock_json = df_stock_pnl.to_json(orient='split')
     df_benmark_pnl = buyhold_test.get_benchmark_pnl()
     benmark_json = df_benmark_pnl.to_json(orient='split')
-    test_result = get_performance_test_result(df=df)
+    df_states = buyhold_test.get_performance_states()
+    test_result = get_performance_test_result(rics=rics, df_states=df_states)
     print("finish test")
     return test_result, porfolio_json, stock_json, benmark_json
 

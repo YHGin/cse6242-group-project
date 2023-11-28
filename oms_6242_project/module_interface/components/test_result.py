@@ -1,19 +1,14 @@
 """
 This script produce test result context
 """
-from module_core.container.BackTestInfo import NotionalInfo, PerformanceInfo
 from module_utility.sample.mock import MOCK_PERFORMANCE_STATUS
-
-from module_core.core import BTCore
+from typing import List
 from dash import html, dcc, dash_table
 import pandas as pd
 import plotly.express as px
 
-DF_PERFORMANCE = MOCK_PERFORMANCE_STATUS()
 
-
-def get_performance_test_result(df: pd.DataFrame):
-    rics = df.ric.unique()
+def get_performance_test_result(rics:List[str], df_states: pd.DataFrame):
     first_ric = rics[0]
     test_result = html.Div([
         html.H2(children='BackTest Result',
@@ -29,8 +24,8 @@ def get_performance_test_result(df: pd.DataFrame):
         html.H3(children='Performance Status',
                 style={'textAlign': 'left', 'width': '90%', 'height': '30%', 'margin': '10px'}),
         dash_table.DataTable(
-            data=DF_PERFORMANCE.to_dict('records'),
-            columns=[{'id': c, 'name': c} for c in DF_PERFORMANCE.columns],
+            data=df_states.to_dict('records'),
+            columns=[{'id': c, 'name': c} for c in df_states.columns],
             style_table={'overflowX': 'auto',
                          'width': '90%',
                          'margin': '10px',
