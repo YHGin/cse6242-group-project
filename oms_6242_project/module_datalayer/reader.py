@@ -93,8 +93,8 @@ class DbReader(Db):
 
 
 def db_read_test():
-    rics = ["00001.HK", "00002.HK"]
-    start_date = "2023-06-01"
+    rics = ["00001.HK"]
+    start_date = "2020-06-01"
     end_date = "2023-06-02"
     db_reader = DbReader(path="./resource/db/backtest_db")
     df = db_reader.get_stock_price(rics=rics, start_date=start_date, end_date=end_date)

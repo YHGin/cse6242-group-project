@@ -91,6 +91,7 @@ def run():
     portfolio_pnl = buyhold_test.get_portfolio_pnl()
     stock_pnl = buyhold_test.get_stock_pnl()
     benchmark_pnl = buyhold_test.get_benchmark_pnl()
+    performance_states = buyhold_test.get_performance_states()
     debug_point = 3
 
 
